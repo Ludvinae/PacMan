@@ -28,5 +28,5 @@ WALLS = exteriorWalls.union(interiorWalls)
 # Dictionnary with all infos on the map, imported in the main file
 map1 = {
     "height": HEIGHT, "width": WIDTH, "walls": WALLS, "playerStartPosition": (10,5), 
-    "numberOfGhosts": 2, "ghost1StartPosition": (6,5), "ghost2StartPosition": (14,5)
+    "ghostStartPosition": set((6,5), (14,5))
 }
