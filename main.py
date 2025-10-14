@@ -18,15 +18,15 @@ def display(grid):
     # Efface l'affichage precedent
     os.system("cls" if os.name == "nt" else "clear")
 
-    for x in range(len(grid)):
+    for y in range(len(grid)):
         print()
-        for y in range(len(grid[x])):
-            print(grid[x][y], end="")
+        for x in range(len(grid[y])):
+            print(grid[y][x], end="")
 
 
 def move(map, grid, player):
-    y, x = player["position"]
-    grid[x][y] = " "
+    x, y = player["position"]
+    grid[y][x] = " "
     print()
     match input("Movement (ZQSD): ").lower():
         case "z":
@@ -47,7 +47,7 @@ def move(map, grid, player):
     grid[player["position"][1]][player["position"][0]] = player["symbol"]
 
 def isValidMove(x, y, map):
-    if (y,x) not in map["walls"]:
+    if (x,y) not in map["walls"]:
         return True
     return False
 
@@ -64,14 +64,14 @@ def generateGhosts(map):
 
 def generateMap(map, player):
     grid = [["."]*map["width"] for _ in range(map["height"])]
-    for x in range(map["height"]):
-        for y in range(map["width"]):
-            if (y,x) in map["walls"]:
-                grid[x][y] = "#"
-            elif (y,x) == map["playerStartPosition"]:
-                grid[x][y] = player["symbol"]
-            elif (y,x) in map["ghostStartPosition"]:
-                grid[x][y] = "G"
+    for y in range(map["height"]):
+        for x in range(map["width"]):
+            if (x,y) in map["walls"]:
+                grid[y][x] = "#"
+            elif (x,y) == map["playerStartPosition"]:
+                grid[y][x] = player["symbol"]
+            elif (x,y) in map["ghostStartPosition"]:
+                grid[y][x] = "G"
 
     return grid
 
