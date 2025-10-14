@@ -24,6 +24,28 @@ def display(grid):
             print(grid[x][y], end="")
 
 
+def move(grid, player):
+    x, y = player["position"]
+    match input("Movement (ZQSD): ").lower():
+        case "z":
+            if isValidMove(x, y - 1, grid):
+                pass
+        case "q":
+            if isValidMove(x - 1, y, grid):
+                pass
+        case "s":
+            if isValidMove(x, y + 1, grid):
+                pass
+        case "d":
+            if isValidMove(x + 1, y, grid):
+                pass
+
+def isValidMove(x, y, map):
+    if (x,y) not in map["walls"]:
+        return True
+    return False
+
+
 # Functions to get the starting conditions, run once at the start of a new game
 def generatePlayer(map):
     symbol = input("Voulez-vous jouer avec Pacman (P) ou avec Pacwoman (W)?").upper()
