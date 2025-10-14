@@ -11,7 +11,7 @@ def main():
     # Boucle de jeu principale
     while True:
         display(grid)
-        break
+        move(currentMap, grid, player)
 
 
 def display(grid):
@@ -24,24 +24,30 @@ def display(grid):
             print(grid[x][y], end="")
 
 
-def move(grid, player):
-    x, y = player["position"]
+def move(map, grid, player):
+    y, x = player["position"]
+    grid[x][y] = " "
+    print()
     match input("Movement (ZQSD): ").lower():
         case "z":
-            if isValidMove(x, y - 1, grid):
-                pass
+            if isValidMove(x, y - 1, map):
+                player["position"] = (x,y-1)                
         case "q":
-            if isValidMove(x - 1, y, grid):
-                pass
+            if isValidMove(x - 1, y, map):
+                player["position"] = (x-1,y) 
         case "s":
-            if isValidMove(x, y + 1, grid):
-                pass
+            if isValidMove(x, y + 1, map):
+                player["position"] = (x,y+1) 
         case "d":
-            if isValidMove(x + 1, y, grid):
-                pass
+            if isValidMove(x + 1, y, map):
+                player["position"] = (x+1,y) 
+        case _:
+            player["position"] = (x,y)
+
+    grid[player["position"][1]][player["position"][0]] = player["symbol"]
 
 def isValidMove(x, y, map):
-    if (x,y) not in map["walls"]:
+    if (y,x) not in map["walls"]:
         return True
     return False
 
