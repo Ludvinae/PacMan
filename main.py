@@ -1,5 +1,6 @@
 import os
 from map import map1
+from math import sqrt
 from random import choice
 import start
 
@@ -77,8 +78,10 @@ def ghostMove(ghosts, player, map, grid):
             grid[y][x] = "."
         else:
             grid[y][x] = " "
+
         validPositions = testPosition(x, y, map)
-        x, y = choice(validPositions)
+        x, y = getDistance(validPositions, player)
+
         ghost["position"] = (x, y)
         if grid[y][x] == player["symbol"]:
             gameEnd("over")
@@ -101,6 +104,23 @@ def testPosition(x, y, map):
                 positions.append(pos)
     
     return positions
+
+def euclidianDistance(position1 : tuple, position2 : tuple):
+    ghostX, ghostY = position1
+    playerX, playerY = position2
+    return sqrt(((ghostX - playerX) ** 2) + ((ghostY - playerY) ** 2))
+
+def getDistance(moves : list, player):
+    bestMove = moves[0]
+    minDistance = euclidianDistance(moves[0], player["position"])
+    for move in moves[1:]:
+        distance = euclidianDistance(move, player["position"])
+        if distance < minDistance:
+            minDistance = distance
+            bestMove = move
+    
+    return bestMove
+
         
 def gameEnd(type):
     global gameContinue
