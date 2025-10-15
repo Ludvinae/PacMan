@@ -1,5 +1,6 @@
 import os
 from map import map1
+from random import choice
 
 
 def main():
@@ -10,13 +11,17 @@ def main():
 
     # Boucle de jeu principale
     while True:
-        display(grid)
+        display(grid, player)
         move(currentMap, grid, player)
+        ghostMove(ghosts, player, currentMap, grid)
+        
 
-
-def display(grid):
+def display(grid, player):
     # Efface l'affichage precedent
     os.system("cls" if os.name == "nt" else "clear")
+    print("__________________________________")
+    print(f"| Level: {player["level"]}       | Score: {player["score"]}      |")
+    print("|________________________________|")
 
     for y in range(len(grid)):
         print()
@@ -44,13 +49,48 @@ def move(map, grid, player):
         case _:
             player["position"] = (x,y)
 
-    grid[player["position"][1]][player["position"][0]] = player["symbol"]
+    newX = player["position"][0]
+    newY = player["position"][1]
+    if grid[newY][newX] == ".":
+        player["score"] += 1
+    elif grid[newY][newX] == "G":
+        print("Game Over !!")
+    grid[newY][newX] = player["symbol"]
 
 def isValidMove(x, y, map):
     if (x,y) not in map["walls"]:
         return True
     return False
 
+def ghostMove(ghosts, player, map, grid):
+    for ghost in ghosts:
+        x, y = ghost["position"]
+        if ghost["isOnGum"]:
+            grid[y][x] = "."
+        else:
+            grid[y][x] = " "
+        validPositions = testPosition(x, y, map)
+        x, y = choice(validPositions)
+        ghost["position"] = (x, y)
+        if grid[y][x] == player["symbol"]:
+            print("Game Over !!!")
+            break
+        grid[y][x] = "G"
+
+
+def testPosition(x, y, map):
+    positions = []
+    for i in range(-1, 2):
+        if i != 0:
+            pos = (x+i, y)
+            if pos not in map["walls"]:
+                positions.append(pos)
+            pos = (x, y+i)
+            if pos not in map["walls"]:
+                positions.append(pos)
+    
+    return positions
+        
 
 # Functions to get the starting conditions, run once at the start of a new game
 def generatePlayer(map):
