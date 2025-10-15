@@ -11,6 +11,7 @@ def main():
     ghosts = generateGhosts(currentMap)
     grid = generateMap(currentMap, player)
 
+    
     # Boucle de jeu principale
     while gameContinue:
         display(grid, player)
@@ -23,7 +24,7 @@ def display(grid, player):
     # Efface l'affichage precedent
     os.system("cls" if os.name == "nt" else "clear")
     print("__________________________________")
-    print(f"| Level: {player["level"]}       | Score: {player["score"]}      |")
+    print(f"| Level: {player["level"]}      | Score: {player["score"]}      |")
     print("|________________________________|")
 
     for y in range(len(grid)):
@@ -36,7 +37,7 @@ def move(map, grid, player):
     x, y = player["position"]
     grid[y][x] = " "
     print()
-    match input("Movement (ZQSD): ").lower():
+    match input("Movement (ZQSD): ").lower()[:1]:
         case "z":
             if isValidMove(x, y - 1, map):
                 player["position"] = (x,y-1)                
@@ -54,11 +55,14 @@ def move(map, grid, player):
 
     newX = player["position"][0]
     newY = player["position"][1]
-    if grid[newY][newX] == ".":
-        player["score"] += 1
-    elif grid[newY][newX] == "G":
+    if grid[newY][newX] == "G":
         gameEnd("over")
-    grid[newY][newX] = player["symbol"]
+    else:
+        if grid[newY][newX] == ".":
+            player["score"] += 1
+            if player["score"] == map["maxScore"]:
+                gameEnd("win")  
+        grid[newY][newX] = player["symbol"]
 
 def isValidMove(x, y, map):
     if (x,y) not in map["walls"]:
@@ -77,6 +81,10 @@ def ghostMove(ghosts, player, map, grid):
         ghost["position"] = (x, y)
         if grid[y][x] == player["symbol"]:
             gameEnd("over")
+        if grid[y][x] == ".":
+            ghost["isOnGum"] = True
+        else:
+            ghost["isOnGum"] = False
         grid[y][x] = "G"
 
 
@@ -94,6 +102,7 @@ def testPosition(x, y, map):
     return positions
         
 def gameEnd(type):
+    global gameContinue
     if type == "over":
         os.system("cls" if os.name == "nt" else "clear")
         print("____________________________________")
