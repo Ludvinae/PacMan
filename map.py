@@ -28,5 +28,5 @@ WALLS = exteriorWalls.union(interiorWalls)
 # Dictionnary with all infos on the map, imported in the main file
 map1 = {
     "height": HEIGHT, "width": WIDTH, "walls": WALLS, "playerStartPosition": (10,5), 
-    "ghostStartPosition": [(6,5), (14,5)]
+    "ghostStartPosition": [(6,5), (14,5)], "maxScore": 124
 }
