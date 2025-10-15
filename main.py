@@ -3,6 +3,8 @@ from map import map1
 from random import choice
 
 
+gameContinue = True
+
 def main():
     currentMap = map1
     player = generatePlayer(currentMap)
@@ -10,10 +12,11 @@ def main():
     grid = generateMap(currentMap, player)
 
     # Boucle de jeu principale
-    while True:
+    while gameContinue:
         display(grid, player)
         move(currentMap, grid, player)
-        ghostMove(ghosts, player, currentMap, grid)
+        if gameContinue:
+            ghostMove(ghosts, player, currentMap, grid)
         
 
 def display(grid, player):
@@ -54,7 +57,7 @@ def move(map, grid, player):
     if grid[newY][newX] == ".":
         player["score"] += 1
     elif grid[newY][newX] == "G":
-        print("Game Over !!")
+        gameEnd("over")
     grid[newY][newX] = player["symbol"]
 
 def isValidMove(x, y, map):
@@ -73,8 +76,7 @@ def ghostMove(ghosts, player, map, grid):
         x, y = choice(validPositions)
         ghost["position"] = (x, y)
         if grid[y][x] == player["symbol"]:
-            print("Game Over !!!")
-            break
+            gameEnd("over")
         grid[y][x] = "G"
 
 
@@ -91,6 +93,20 @@ def testPosition(x, y, map):
     
     return positions
         
+def gameEnd(type):
+    if type == "over":
+        os.system("cls" if os.name == "nt" else "clear")
+        print("____________________________________")
+        print("|          GAME OVER !             |")
+        print("|__________________________________|")
+        gameContinue = False
+    elif type == "win":
+        os.system("cls" if os.name == "nt" else "clear")
+        print("____________________________________")
+        print("|           YOU WON !             |")
+        print("|__________________________________|")
+        gameContinue = False
+
 
 # Functions to get the starting conditions, run once at the start of a new game
 def generatePlayer(map):
