@@ -17,9 +17,9 @@ def main():
     # Boucle de jeu principale
     while gameContinue:
         display(grid, player)
-        move(currentMap, grid, player)
+        ghostMove(ghosts, player, currentMap, grid)
         if gameContinue:
-            ghostMove(ghosts, player, currentMap, grid)
+            move(currentMap, grid, player)
         
 
 def display(grid, player):
@@ -72,19 +72,26 @@ def isValidMove(x, y, map):
     return False
 
 def ghostMove(ghosts, player, map, grid):
+    ghostPositions = set()
     for ghost in ghosts:
+        ghostPositions.add(ghost["position"])
+
+    for ghost in ghosts:
+        ghostPositions.remove(ghost["position"])
         x, y = ghost["position"]
         if ghost["isOnGum"]:
             grid[y][x] = "."
         else:
             grid[y][x] = " "
 
-        validPositions = testPosition(x, y, map)
-        if len(validPositions) == 4:
-            validPositions = choices(validPositions, k=3)
+        validPositions = testWallPosition(x, y, map, ghostPositions)
+
+        if len(validPositions) >= 3:
+            validPositions = choices(validPositions, k=(len(validPositions) -1))
         x, y = getDistance(validPositions, player)
 
         ghost["position"] = (x, y)
+        ghostPositions.add(ghost["position"])
         if grid[y][x] == player["symbol"]:
             gameEnd("over")
         if grid[y][x] == ".":
@@ -94,15 +101,17 @@ def ghostMove(ghosts, player, map, grid):
         grid[y][x] = "G"
 
 
-def testPosition(x, y, map):
+
+def testWallPosition(x, y, map, ghostPositions : set):
     positions = []
+    
     for i in range(-1, 2):
         if i != 0:
             pos = (x+i, y)
-            if pos not in map["walls"]:
+            if pos not in map["walls"] and pos not in ghostPositions:
                 positions.append(pos)
             pos = (x, y+i)
-            if pos not in map["walls"]:
+            if pos not in map["walls"] and pos not in ghostPositions:
                 positions.append(pos)
     
     return positions
