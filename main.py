@@ -1,7 +1,7 @@
 import os
 from map import map1
 from math import sqrt
-import msvcrt
+from random import choices
 import start
 
 
@@ -33,37 +33,6 @@ def display(grid, player):
         print()
         for x in range(len(grid[y])):
             print(grid[y][x], end="")
-
-
-def move1(map, grid, player):
-    x, y = player["position"]
-    grid[y][x] = " "
-    print()
-
-    key = msvcrt.getch()
-    if key == b'H':  # Flèche haut
-        if isValidMove(x, y - 1, map):
-            player["position"] = (x,y-1)
-    elif key == b'P':  # Flèche bas
-        if isValidMove(x, y + 1, map):
-                player["position"] = (x,y+1)
-    elif key == b'K':  # Flèche gauche
-        if isValidMove(x - 1, y, map):
-                player["position"] = (x-1,y) 
-    elif key == b'M':  # Flèche droite
-        if isValidMove(x + 1, y, map):
-            player["position"] = (x+1,y) 
-
-    newX = player["position"][0]
-    newY = player["position"][1]
-    if grid[newY][newX] == "G":
-        gameEnd("over")
-    else:
-        if grid[newY][newX] == ".":
-            player["score"] += 1
-            if player["score"] == map["maxScore"]:
-                gameEnd("win")  
-        grid[newY][newX] = player["symbol"]
 
 
 def move(map, grid, player):
@@ -111,6 +80,8 @@ def ghostMove(ghosts, player, map, grid):
             grid[y][x] = " "
 
         validPositions = testPosition(x, y, map)
+        if len(validPositions) == 4:
+            validPositions = choices(validPositions, k=3)
         x, y = getDistance(validPositions, player)
 
         ghost["position"] = (x, y)
