@@ -13,9 +13,12 @@ def main():
     
     # Boucle de jeu principale
     while display.gameContinue:
+        # Utilise la liste de listes grid pour afficher l'etat actuel du jeu
         display.display(grid, player)
+        # Décide des mouvements de chaque ghost en fonction de la distance avec le player
         ghostMove(ghosts, player, currentMap, grid)
         if display.gameContinue:
+            # Demande au joueur son choix de mouvement et update le grid en fonction
             playerMove(currentMap, grid, player)
         
 
