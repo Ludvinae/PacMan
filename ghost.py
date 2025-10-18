@@ -2,6 +2,7 @@ from math import sqrt
 from random import choices
 from display import gameEnd
 
+
 def ghostMove(ghosts, player, map, grid):
     ghostPositions = set()
     for ghost in ghosts:
@@ -16,10 +17,8 @@ def ghostMove(ghosts, player, map, grid):
             grid[y][x] = " "
 
         validPositions = testWallPosition(x, y, map, ghostPositions)
-
-        if len(validPositions) >= 3:
-            validPositions = choices(validPositions, k=(len(validPositions) -1))
-        x, y = getDistance(validPositions, player)
+        validPositions = moveFilter(validPositions, ghost["movesRandomly"])
+        x, y = getDistance(validPositions, ghost, player)
 
         ghost["position"] = (x, y)
         ghostPositions.add(ghost["position"])
@@ -52,7 +51,7 @@ def euclidianDistance(position1 : tuple, position2 : tuple):
     playerX, playerY = position2
     return sqrt(((ghostX - playerX) ** 2) + ((ghostY - playerY) ** 2))
 
-def getDistance(moves : list, player):
+def getDistance(moves : list, ghost, player):
     bestMove = moves[0]
     minDistance = euclidianDistance(moves[0], player["position"])
     for move in moves[1:]:
@@ -61,4 +60,19 @@ def getDistance(moves : list, player):
             minDistance = distance
             bestMove = move
     
+    # Active ou désactive le suivi strict du player selon la distance
+    randomMoveActivator(ghost, minDistance)
+
     return bestMove
+
+def moveFilter(positions : list, bool) -> list:
+    if bool and len(positions) >= 3:
+        return choices(positions, k=(len(positions) -1))
+    return positions 
+
+
+def randomMoveActivator(ghost, distance):
+    if distance > 4:
+        ghost["movesRandomly"] = False
+    else:
+        ghost["movesRandomly"] = True

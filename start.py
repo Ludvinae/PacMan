@@ -6,7 +6,7 @@ def generatePlayer(map):
     return {"position": map["playerStartPosition"], "symbol": symbol, "score": 0, "level": 1}
 
 def generateGhosts(map):
-    return [{"position": position, "isOnGum": True} for position in map["ghostStartPosition"]]
+    return [{"position": position, "isOnGum": True, "movesRandomly": False} for position in map["ghostStartPosition"]]
 
 def generateMap(map, player):
     grid = [["."]*map["width"] for _ in range(map["height"])]
