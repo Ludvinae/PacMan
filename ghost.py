@@ -73,6 +73,6 @@ def moveFilter(positions : list, bool) -> list:
 
 def randomMoveActivator(ghost, distance):
     if distance > 4:
-        ghost["movesRandomly"] = False
-    else:
         ghost["movesRandomly"] = True
+    else:
+        ghost["movesRandomly"] = False
