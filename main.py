@@ -9,11 +9,10 @@ import display
 
 def main():
     # check for command line arguments to set player starting level
+    level = 1
     if len(argv) > 1:
         if argv[1].isdigit():
             level = int(argv[1])
-    else:
-        level = 1
 
     # Ask player for his prefered symbol
     player = generatePlayer(level)
