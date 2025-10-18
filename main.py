@@ -1,3 +1,4 @@
+from time import sleep
 from map import map1
 import start
 from player import playerMove, generatePlayer
@@ -27,6 +28,7 @@ def main():
                 display.display(grid, player)
                 # Décide des mouvements de chaque ghost en fonction de la distance avec le player
                 ghostMove(ghosts, player, currentMap, grid)
+                sleep(0.15)
                 
         
         if not display.continuePlaying():
