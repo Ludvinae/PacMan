@@ -1,11 +1,11 @@
 from display import gameEnd
 
 
-def generatePlayer():
+def generatePlayer(level):
     symbol = input("Voulez-vous jouer avec Pacman (M), Pacwoman (W) ou Pacperson (P) ? ").upper()
     if symbol != "P" and symbol != "W" and symbol != "M":
         symbol = "P"
-    return {"position": (0, 0), "symbol": symbol, "score": 0, "level": 1}
+    return {"position": (0, 0), "symbol": symbol, "score": 0, "level": level}
 
 
 def playerMove(map, grid, player):

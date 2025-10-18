@@ -1,3 +1,4 @@
+from sys import argv
 from time import sleep
 from mapSelector import getMap
 import start
@@ -7,8 +8,15 @@ import display
 
 
 def main():
+    # check for command line arguments to set player starting level
+    if len(argv) > 1:
+        if argv[1].isdigit():
+            level = int(argv[1])
+    else:
+        level = 1
+
     # Ask player for his prefered symbol
-    player = generatePlayer()
+    player = generatePlayer(level)
     display.clearScreen()
 
     # Boucle de jeu principale
