@@ -1,5 +1,5 @@
 from time import sleep
-from map import map1
+from map import getMap
 import start
 from player import playerMove, generatePlayer
 from ghost import ghostMove
@@ -14,7 +14,7 @@ def main():
     # Boucle de jeu principale
     while True:
         # Generate a new map
-        currentMap = map1
+        currentMap = getMap(player["level"])
         player["position"] = currentMap["playerStartPosition"]
         ghosts = start.generateGhosts(currentMap)
         grid = start.generateMap(currentMap, player)

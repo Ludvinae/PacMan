@@ -1,32 +1,15 @@
-HEIGHT = 11
-WIDTH = 21
+import map1, map2, map3
 
-# Record all walls on the map
-exteriorWalls = {
-    (0,0), (0,1), (0,2), (0,3), (0,4), (0,5), (0,6), (0,7),
-    (0,8), (0,9), (0,10), (1,0), (1, 10), (2,0), (2,10),
-    (3,0), (3,10), (4,0), (4,10), (5,0), (5,10), (6,0), (6,10), 
-    (7,0), (7,10), (8,0), (8,10), (9,0), (9,10), (10,0), (10,10), 
-    (11,0), (11,10), (12,0), (12,10), (13,0), (13,10), (14,0), (14,10), 
-    (15,0), (15,10), (16,0), (16,10), (17,0), (17,10), (18,0), (18,10), 
-    (19,0), (19,10), (20,0), (20,1), (20,2), (20,3), 
-    (20,4), (20,5), (20,6), (20,7), (20,8), (20,9), (20,10)
-}
+mapList = [map1.map, map2.map, map3.map]
 
-interiorWalls = {
-    (1,6), (2,2), (2,3), (2,6), (2,8), (3,3), (3,4), (3,6), (3,8), 
-    (4,6), (4,8), (5,2), (5,8), (6,2), (6,3), (6,8), (8,3), (8,4), 
-    (8,5), (8,6), (8,7), (9,3), (9,7), (10,1), (10,9), (11,3), (11,7), 
-    (12,3), (12,4), (12,5), (12,6), (12,7), (14,2), (14,7), (14,8), 
-    (15,2), (15,8), (16,2), (16,4), (16,6), (17,2), (17,4), (17,6), 
-    (17,7), (17,8), (19,8), (20,4) 
-}
+def getMap(level):
+    currentMap = mapList[level - 1]
+    currentMap["maxScore"] = setMaxScore(currentMap)
 
-WALLS = exteriorWalls.union(interiorWalls)
+    return currentMap
 
+def setMaxScore(map):
+    mapArea = map["height"] * map["width"]
+    wallArea = len(map["walls"])
 
-# Dictionnary with all infos on the map, imported in the main file
-map1 = {
-    "height": HEIGHT, "width": WIDTH, "walls": WALLS, "playerStartPosition": (10,5), 
-    "ghostStartPosition": [(4,5), (16,5)], "maxScore": 124
-}
+    return mapArea - wallArea - 1
