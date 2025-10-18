@@ -1,12 +1,9 @@
-# Functions to get the starting conditions, run once at the start of a new game
-def generatePlayer(map):
-    symbol = input("Voulez-vous jouer avec Pacman (M), Pacwoman (W) ou Pacperson (P) ? ").upper()
-    if symbol != "P" and symbol != "W" and symbol != "M":
-        symbol = "P"
-    return {"position": map["playerStartPosition"], "symbol": symbol, "score": 0, "level": 1}
+# Functions to get the starting conditions, run once at the start of a new map
+
 
 def generateGhosts(map):
-    return [{"position": position, "isOnGum": True, "movesRandomly": False} for position in map["ghostStartPosition"]]
+    return [{"position": position, "isOnGum": True, "movesRandomly": True} for position in map["ghostStartPosition"]]
+
 
 def generateMap(map, player):
     grid = [["."]*map["width"] for _ in range(map["height"])]

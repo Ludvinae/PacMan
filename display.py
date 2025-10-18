@@ -4,7 +4,7 @@ gameContinue = True
 
 def display(grid, player):
     # Efface l'affichage precedent
-    os.system("cls" if os.name == "nt" else "clear")
+    clearScreen()
     print("__________________________________")
     print(f"| Level: {player["level"]}      | Score: {player["score"]}      |")
     print("|________________________________|")
@@ -15,6 +15,10 @@ def display(grid, player):
             print(grid[y][x], end="")
 
         
+def clearScreen():
+    os.system("cls" if os.name == "nt" else "clear")
+
+
 def gameEnd(type):
     global gameContinue
     if type == "over":
@@ -29,3 +33,16 @@ def gameEnd(type):
         print("|           YOU WON !             |")
         print("|__________________________________|")
         gameContinue = False
+
+
+def continuePlaying():
+    global gameContinue
+    playerInput = input("Voulez-vous continuer à jouer? (Oui ou Non): ").lower().strip()
+    if not playerInput:
+        playerInput = "o" 
+    if playerInput[0] == "o":
+        gameContinue = True
+        return True
+    
+    return False
+        

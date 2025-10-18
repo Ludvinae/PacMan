@@ -1,6 +1,13 @@
 from display import gameEnd
 
 
+def generatePlayer():
+    symbol = input("Voulez-vous jouer avec Pacman (M), Pacwoman (W) ou Pacperson (P) ? ").upper()
+    if symbol != "P" and symbol != "W" and symbol != "M":
+        symbol = "P"
+    return {"position": (0, 0), "symbol": symbol, "score": 0, "level": 1}
+
+
 def playerMove(map, grid, player):
     x, y = player["position"]
     grid[y][x] = " "
@@ -29,7 +36,9 @@ def playerMove(map, grid, player):
         if grid[newY][newX] == ".":
             player["score"] += 1
             if player["score"] == map["maxScore"]:
-                gameEnd("win")  
+                player["level"] += 1 
+                player["score"] = 0
+                gameEnd("win") 
         grid[newY][newX] = player["symbol"]
 
 
