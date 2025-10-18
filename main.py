@@ -1,5 +1,5 @@
 from time import sleep
-from map import getMap
+from mapSelector import getMap
 import start
 from player import playerMove, generatePlayer
 from ghost import ghostMove
